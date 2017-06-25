@@ -1,0 +1,49 @@
+.mcc-box__field-container {
+	margin-bottom: 16px;
+}
+
+.mcc-box__label {
+	display: block;
+	margin-bottom: 4px;
+	font-size: 14px;
+}
+
+.mcc-box__checkbox-container .mcc-box__label {
+	display: inline-block;
+    margin-right: 8px;
+}
+
+.mcc-box__field-container .mcc-box__field-text,
+.mcc-box__field-container .mcc-box__field-textarea {
+	width: 100%;
+}
+
+.mcc-box__field-textarea {
+	min-height: 100px;
+}
+
+.mcc-box__description {
+	color: #666;
+    font-style: italic;
+    display: block;
+    font-size: 13px;
+    margin: 0 0 4px 0;
+}
+
+.mcc-box__image-preview {
+	width: 150px;
+    height: 150px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.mcc-box__image-preview.is-hidden {
+	display: none;
+}
+
+.mcc-box__repeated {
+	border: 1px solid #ddd;
+	background-color: #f5f5f5;
+	padding: 12px;
+	margin: 0 0 12px 0;
+}
