@@ -47,3 +47,15 @@
 	padding: 12px;
 	margin: 0 0 12px 0;
 }
+
+.mcc-box__add span {
+	margin-top: 4px;
+}
+
+.mcc-box__repeater-button span {
+	margin-top: 3px;
+}
+
+.mcc-box__repeated .mcc-box__remove {
+	margin-right: 12px;
+}

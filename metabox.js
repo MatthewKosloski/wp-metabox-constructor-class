@@ -5,15 +5,10 @@
 
 		var image_frame;
 
-		var $uploadBtn = $('.js-mcc-box-image-upload-button');
-
-		$uploadBtn.on('click', function(e){
+		$('.mcc-box__field-container').on('click', '.js-mcc-box-image-upload-button', function(e){
 			e.preventDefault();
 
-			var id = $(this).data('hidden-input');
-
-			var $hiddenInput = $('#' + id);
-			var $previewImage = $('#js-mcc-box-image-preview-' + id);
+			var id = $(this).data('hidden-input').replace(/(\[|\])/g, '\\$1');
 
 			if(image_frame !== undefined) {
 				image_frame.open();
@@ -26,17 +21,31 @@
 
 			image_frame.on('select', function() {
 				var attachment = image_frame.state().get('selection').first().toJSON();
-				$hiddenInput
-					.val(attachment.url);
-				$previewImage
-					.removeClass('is-hidden')
-					.attr('src', attachment.url);
-				$uploadBtn.text('Change Image');
+				$('#image-' + id).val(attachment.url);
+
+				$('#js-'+id+'-image-preview').removeClass('is-hidden').attr('src', attachment.url);
+
+				$('.js-mcc-box-image-upload-button').text('Change Image');
+
+				$('#' + id).css({background: 'red'});
 			});
 
 			image_frame.open();
 
 		});
+
+		$('.mcc-box__repeated-blocks').on('click', '.mcc-box__remove', function() {
+			$(this).parent().remove();
+			return false;
+		});
+
+		$('.mcc-box__repeated-blocks').sortable({
+			opacity: 0.6, 
+			revert: true, 
+			cursor: 'move', 
+			handle: '.js-mcc-box-sort'
+		});
+
 	});
 
 })(jQuery);

@@ -50,11 +50,9 @@
 
 				wp_enqueue_media();
 
-				$plugin_path = plugins_url( 'wp-metabox-constructor-class', plugin_basename( dirname( __FILE__ ) ));
-
 			    if($typenow == $this->_meta_box['post_type']) {
-			        wp_enqueue_style('mcc-styles', $plugin_path . '/metabox.css', array(), null);
-			        wp_enqueue_script('mcc-scripts', $plugin_path . '/metabox.js', array('jquery'), null);
+			        wp_enqueue_style('mcc-styles', $this->_path . '/metabox.css', array(), null);
+			        wp_enqueue_script('mcc-scripts', $this->_path . '/metabox.js', array('jquery'), null);
 			    }
 			}
 
@@ -128,7 +126,7 @@
 			*/
 			public function get_block_element_class($element, $isField = true) {
 				if(isset($element)) {
-					return sprintf(
+					return trim(sprintf(
 						'%s %s%s',  
 						($isField 
 							? (sprintf('%s__%s', self::BLOCK_NAMESPACE, 'field')) 
@@ -136,7 +134,7 @@
 						),
 						sprintf('%s__%s', self::BLOCK_NAMESPACE, ($isField ? 'field-' : '')),
 						$element
-					);
+					));
 				}
 			}
 
@@ -201,9 +199,9 @@
 
 				echo sprintf(
 					'<img id="%s" class="%s" src="%s" alt="%s">',
-					esc_attr( sprintf('js-%s-image-preview-%s', self::BLOCK_NAMESPACE, $field['id']) ),
+					esc_attr( sprintf('js-%s-image-preview', $field['id']) ),
 					esc_attr( sprintf('%s %s', $this->get_block_element_class('image-preview', false), empty($meta) ? 'is-hidden' : '') ),
-					esc_attr( get_post_meta($post->ID, $field['id'], true) ),
+					esc_attr( $meta ),
 					esc_attr( '' )	
 				);
 			}
@@ -285,7 +283,8 @@
 			public function show_field_image($field, $meta) {
 				$this->before_field($field, $meta); // pass in $meta for preview image
 				echo sprintf(
-					'<input type="hidden" id="%1$s" name="%1$s" value="%2$s">',
+					'<input type="hidden" id="%s" name="%s" value="%s">',
+					esc_attr( 'image-' . $field['id'] ),
 					esc_attr( $field['id'] ),
 					(isset($meta) ? $meta : '')
 				);
@@ -307,25 +306,26 @@
 					esc_attr( $this->get_block_element_class('repeated-blocks', false) )
 				);
 
-				var_dump($meta);
-
 				$count = 0;
 				if(count($meta) > 0 && is_array($meta)) {
 					foreach($meta as $m) {
 						$this->get_repeated_block($field, $m, $count);
 						$count++;
 					}
+				} else {
+					$this->get_repeated_block($field, '', $count);
 				}
 
 				echo '</div>';
 
 				// "add" button
 				echo sprintf(
-					'<a id="%s" class="button">
+					'<a id="%s" class="%s button">
 						<span class="dashicons dashicons-plus"></span>
 						Add Item
 					</a>',
-					esc_attr( sprintf('js-%s-add', self::BLOCK_NAMESPACE) )
+					esc_attr( sprintf('js-%s-add', $field['id']) ),
+					esc_attr( $this->get_block_element_class('add', false)  )
 				);
 
 				$this->after_field();
@@ -333,7 +333,7 @@
 				// create a repeater block to use for the "add" functionality
 				ob_start();
 
-				echo sprintf('<div>%s</div>', esc_html( $this->get_repeated_block($field, $meta, null, true) ));
+				sprintf('<div>%s</div>', esc_html( $this->get_repeated_block($field, $meta, null, true) ));
 
 			    $js_code = ob_get_clean();
 			    $js_code = str_replace("\n", "", $js_code);
@@ -346,25 +346,12 @@
 				echo '<script> 
 						jQuery(document).ready(function($) {
 							var count = '.$count.';
-							var repeatedBlocksContainer = $("#js-'.$field['id'].'-repeated-blocks");
 
-							$("#js-'. self::BLOCK_NAMESPACE .'-add").on("click", function() {
+							$("#js-'. $field['id'] .'-add").on("click", function() {
 								var repeater = \''.$js_code.'\'.replace(/'. self::REPEATER_INDEX_PLACEHOLDER .'/g, count);
-								$(this).before(repeater);
+								$("#js-'. $field['id'] .'-repeated-blocks").append(repeater);
 								count++;
 								return false;
-							});
-
-							$(".js-'. self::BLOCK_NAMESPACE .'-remove").on("click", function() {
-								$(this).parent().remove();
-								return false;
-							});
-
-							repeatedBlocksContainer.sortable({
-								opacity: 0.6, 
-								revert: true, 
-								cursor: "move", 
-								handle: ".js-'. self::BLOCK_NAMESPACE .'-sort"
 							});
 						});
 				</script>';
@@ -393,17 +380,19 @@
 
 				// "remove" button
 				echo sprintf(
-					'<a class="button %s">
-						<span class="dashicons dashicons-no"></span></span>
+					'<a class="%s %s button" title="Remove Item">
+						<span class="dashicons dashicons-no"></span>
 					</a>',
-					esc_attr( sprintf('js-%s-remove', self::BLOCK_NAMESPACE) )
-				);	
+					esc_attr( $this->get_block_element_class('repeater-button', false)  ),
+					esc_attr( $this->get_block_element_class('remove', false)  )
+				);
 
 				// "sort" button
 				echo sprintf(
-					'<a class="button %s">
+					'<a class="button %s %s" title="Click and drag to sort">
 						<span class="dashicons dashicons-menu"></span></span>
 					</a>',
+					esc_attr( $this->get_block_element_class('repeater-button', false)  ),
 					esc_attr( sprintf('js-%s-sort', self::BLOCK_NAMESPACE) )
 				);
 				
