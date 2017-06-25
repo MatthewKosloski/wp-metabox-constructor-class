@@ -242,6 +242,15 @@
 				}
 			}
 
+			public function addWysiwyg($args, $repeater = false) {
+				$field = array_merge(array('type' => 'wysiwyg'), $args);
+				if(!$repeater) {
+					$this->_fields[] = $field;
+				} else {
+					return $field;
+				}
+			}
+
 			public function addRepeaterBlock($args) {
 				$field = array_merge(array('type' => 'repeater'), $args);
 				$this->_fields[] = $field;
@@ -294,6 +303,12 @@
 					esc_attr( $field['id'] ),
 					esc_html( sprintf('%s Image', empty($meta) ? 'Upload' : 'Change') )
 				);
+				$this->after_field();
+			}
+
+			public function show_field_wysiwyg($field, $meta) {
+				$this->before_field($field);
+				wp_editor($meta, $field['id']);
 				$this->after_field();
 			}
 

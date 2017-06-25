@@ -69,4 +69,9 @@ $metabox->addRepeaterBlock(array(
 	'label' => 'Photo Repeater'
 ));
 
+$metabox_repeater_block15_fields[] = $metabox->addWysiwyg(array(
+	'id' => 'metabox_wysiwyg_field',
+	'label' => 'Example Wysiwyg Editor'
+));
+
 ?>
