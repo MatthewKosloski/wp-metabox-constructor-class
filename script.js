@@ -39,7 +39,7 @@
 		});
 
 		$('.mcc-box__repeated-blocks').on('click', '.mcc-box__remove', function() {
-			$(this).siblings('.mcc-box__repeated').remove();
+			$(this).closest('.mcc-box__repeated').remove();
 			return false;
 		});
 
