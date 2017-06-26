@@ -6,6 +6,7 @@
 
 			const BLOCK_NAMESPACE = 'mcc-box'; // (A.K.A "Metabox Constructor Class")
 			const REPEATER_INDEX_PLACEHOLDER = 'CurrentCounter';
+			const REPEATER_ITEM_NUMBER_PLACEHOLDER = 'ItemNumber';
 
 			/**
 			* Stores the metabox config that
@@ -122,15 +123,39 @@
 			    }
 			}
 
+			public function column($width, $contents) {
+				if(isset($width, $contents)) {
+					return sprintf(
+						'<div class="%s %s">%s</div>',
+						esc_attr( $this->get_element_class_with_namespace('col') ),
+						esc_attr( $this->get_element_class_with_namespace(sprintf('col-%d', $width)) ),
+						esc_html( $contents )
+					);
+				}
+			}
+
 			/**
-			* Returns a formatted string for a class name of a field element
-			* or non-field element.
+			* Returns a formatted string for a block-element (block__element) class name.
+			*
+			* @param string $block
+			* @param string $element
+			* @return string
+			*/
+			public function get_block_element_class($block, $element) {
+				if(isset($block, $element)) {
+					return trim(sprintf('%s__%s', $block, $element));
+				}
+			}
+
+			/**
+			* Returns a formatted string for a block-element (block__element) class name 
+			* of a field element or non-field element prefixed with the namespace.
 			*
 			* @param string $element
 			* @param boolean $isField
 			* @return string
 			*/
-			public function get_block_element_class($element, $isField = true) {
+			public function get_block_element_class_with_namespace($element, $isField = true) {
 				if(isset($element)) {
 					return trim(sprintf(
 						'%s %s%s',  
@@ -145,6 +170,23 @@
 			}
 
 			/**
+			* Returns a formatted string for a class name prefixed with 
+			* the namespace.
+			*
+			* @param string $suffix
+			* @return string
+			*/
+			public function get_element_class_with_namespace($suffix) {
+				if(isset($suffix)) {
+					return trim(sprintf(
+						'%s-%s',
+						self::BLOCK_NAMESPACE,
+						$suffix
+					));
+				}
+			}
+
+			/**
 			* Echos some HTML that preceeds a field (container, label, description, etc.)
 			*
 			* @param array $field
@@ -153,14 +195,14 @@
 			public function before_field($field, $meta = null) {
 				echo sprintf(
 					'<div class="%s %s">',
-					esc_attr( $this->get_block_element_class('field-container', false) ),
-					esc_attr( $this->get_block_element_class($field['type'].'-container', false) )
+					esc_attr( $this->get_block_element_class_with_namespace('field-container', false) ),
+					esc_attr( $this->get_block_element_class_with_namespace($field['type'].'-container', false) )
 				);
 
 				if(isset($field['label'])) {
 					echo sprintf(
 						'<label class="%s" for="%s">%s</label>',
-						esc_attr( $this->get_block_element_class('label', false) ),
+						esc_attr( $this->get_block_element_class_with_namespace('label', false) ),
 						esc_attr( $field['id'] ),
 						esc_html( $field['label'] )
 					);
@@ -189,7 +231,7 @@
 			public function get_field_description($desc) {
 				echo sprintf(
 					'<p class="%s">%s</p>',
-					esc_attr( $this->get_block_element_class('description', false) ),
+					esc_attr( $this->get_block_element_class_with_namespace('description', false) ),
 					esc_html( $desc )
 				);	
 			}
@@ -206,7 +248,7 @@
 				echo sprintf(
 					'<img id="%s" class="%s" src="%s" alt="%s">',
 					esc_attr( sprintf('js-%s-image-preview', $field['id']) ),
-					esc_attr( sprintf('%s %s', $this->get_block_element_class('image-preview', false), empty($meta) ? 'is-hidden' : '') ),
+					esc_attr( sprintf('%s %s', $this->get_block_element_class_with_namespace('image-preview', false), empty($meta) ? 'is-hidden' : '') ),
 					esc_attr( $meta ),
 					esc_attr( '' )	
 				);
@@ -270,7 +312,7 @@
 				$this->before_field($field);
 				echo sprintf(
 					'<input type="text" class="%1$s" id="%2$s" name="%2$s" value="%3$s">',
-					esc_attr( $this->get_block_element_class($field['type']) ),
+					esc_attr( $this->get_block_element_class_with_namespace($field['type']) ),
 					esc_attr( $field['id'] ),
 					esc_attr( $meta )
 				);
@@ -281,7 +323,7 @@
 				$this->before_field($field);
 				echo sprintf(
 					'<textarea class="%1$s" id="%2$s" name="%2$s">%3$s</textarea>',
-					esc_attr( $this->get_block_element_class($field['type']) ),
+					esc_attr( $this->get_block_element_class_with_namespace($field['type']) ),
 					esc_attr( $field['id'] ),
 					esc_html( $meta )
 				);
@@ -292,7 +334,7 @@
 				$this->before_field($field);
 				echo sprintf(
 					'<input type="checkbox" class="%1$s" id="%2$s" name="%2$s" %3$s>',
-					esc_attr( $this->get_block_element_class($field['type']) ),
+					esc_attr( $this->get_block_element_class_with_namespace($field['type']) ),
 					esc_attr( $field['id'] ),
 					checked(!empty($meta), true, false)
 				);
@@ -328,7 +370,7 @@
 				echo sprintf(
 					'<div id="%s" class="%s">',
 					esc_attr( sprintf('js-%s-repeated-blocks', $field['id']) ),
-					esc_attr( $this->get_block_element_class('repeated-blocks', false) )
+					esc_attr( $this->get_block_element_class_with_namespace('repeated-blocks', false) )
 				);
 
 				$count = 0;
@@ -350,7 +392,7 @@
 						%s
 					</a>',
 					esc_attr( sprintf('js-%s-add', $field['id']) ),
-					esc_attr( $this->get_block_element_class('add', false)  ),
+					esc_attr( $this->get_block_element_class_with_namespace('add', false)  ),
 					esc_html( sprintf('Add %s', $field['single_label']) )
 				);
 
@@ -374,7 +416,9 @@
 							var count = '.$count.';
 
 							$("#js-'. $field['id'] .'-add").on("click", function() {
-								var repeater = \''.$js_code.'\'.replace(/'. self::REPEATER_INDEX_PLACEHOLDER .'/g, count);
+								var repeater = \''.$js_code.'\'
+									.replace(/'. self::REPEATER_INDEX_PLACEHOLDER .'/g, count)
+									.replace(/'. self::REPEATER_ITEM_NUMBER_PLACEHOLDER .'/g, count + 1);
 								$("#js-'. $field['id'] .'-repeated-blocks").append(repeater);
 								count++;
 								return false;
@@ -384,49 +428,58 @@
 			}
 
 			public function get_repeated_block($field, $meta, $index, $isTemplate = false) {
+
 				echo sprintf(
 					'<div class="%s">',
-					esc_attr( $this->get_block_element_class('repeated', false) )	
+					esc_attr( $this->get_block_element_class_with_namespace('repeated', false) )	
 				);
 
-				echo sprintf('%s %d', $field['single_label'], $index + 1);
-
-				foreach($field['fields'] as $child_field) {
-					$old_id = $child_field['id'];
-
-					$child_field['id'] = sprintf(
-						'%s[%s][%s]', 
-						$field['id'], 
-						($isTemplate ? self::REPEATER_INDEX_PLACEHOLDER : $index), 
-						$child_field['id']
-					);
-
-					$child_meta = isset($meta[$old_id]) && !$isTemplate ? $meta[$old_id] : '';
-
-					call_user_func( array($this, 'show_field_' . $child_field['type']), $child_field, $child_meta );
-				}
-
-				// "remove" button
+				// block header
 				echo sprintf(
-					'<a class="%s %s button" title="Remove Item">
-						<span class="dashicons dashicons-no"></span>
-					</a>',
-					esc_attr( $this->get_block_element_class('repeater-button', false)  ),
-					esc_attr( $this->get_block_element_class('remove', false)  )
+					'<div class="%s %s">
+						<p class="%s">%s</p>
+						<ul class="%s">
+							<li>
+								<a class="%s %s" title="%s">
+									<span class="dashicons dashicons-no"></span>
+								</a>
+							</li>
+							<li>
+								<a class="%s %s" title="Click and drag to sort">
+									<span class="dashicons dashicons-menu"></span>
+								</a>
+							</li>
+						</ul>
+					</div>', 
+					esc_attr( $this->get_element_class_with_namespace('repeated-header', false)  ),
+					esc_attr( $this->get_element_class_with_namespace('clearfix') ),
+					esc_attr( sprintf('%s %s %s', $this->get_block_element_class('repeated-header', 'title'), $this->get_element_class_with_namespace('col'), $this->get_element_class_with_namespace('col-6')) ),
+					esc_html( sprintf('%s '.($isTemplate ? '%s' : '%d'), $field['single_label'], ($isTemplate ? self::REPEATER_ITEM_NUMBER_PLACEHOLDER : $index + 1)) ), 
+					esc_attr( sprintf('%s %s %s', $this->get_block_element_class('repeated-header', 'nav'), $this->get_element_class_with_namespace('col'), $this->get_element_class_with_namespace('col-6')) ),
+					esc_attr( $this->get_block_element_class_with_namespace('repeater-button', false)  ),
+					esc_attr( $this->get_block_element_class_with_namespace('remove', false)  ),
+					esc_attr( sprintf('Remove %s', $field['single_label'])  ),
+					esc_attr( $this->get_block_element_class_with_namespace('repeater-button', false)  ),
+					esc_attr( sprintf('js-%s-sort', self::BLOCK_NAMESPACE) )
 				);
 
-				// "sort" button
-				if($field['is_sortable']) {
-					echo sprintf(
-						'<a class="button %s %s" title="Click and drag to sort">
-							<span class="dashicons dashicons-menu"></span></span>
-						</a>',
-						esc_attr( $this->get_block_element_class('repeater-button', false)  ),
-						esc_attr( sprintf('js-%s-sort', self::BLOCK_NAMESPACE) )
-					);
-				}
-				
-				echo '</div>';
+				echo sprintf('<div class="%s is-hidden">', esc_attr( $this->get_block_element_class_with_namespace('repeated-content', false)  ));
+					// populate block with fields
+					foreach($field['fields'] as $child_field) {
+						$old_id = $child_field['id'];
+
+						$child_field['id'] = sprintf(
+							'%s[%s][%s]', 
+							$field['id'], 
+							($isTemplate ? self::REPEATER_INDEX_PLACEHOLDER : $index), 
+							$child_field['id']
+						);
+
+						$child_meta = isset($meta[$old_id]) && !$isTemplate ? $meta[$old_id] : '';
+
+						call_user_func( array($this, 'show_field_' . $child_field['type']), $child_field, $child_meta );
+					}
+				echo '</div></div>';
 			}
 
  		}
