@@ -35,7 +35,13 @@
 			* @return void
 			*/
 			public function __construct($meta_box_config) {
-				$this->_meta_box = $meta_box_config;
+				
+				$defaults = array(
+					'context' => 'advanced',
+					'priority' => 'default'
+				);
+
+				$this->_meta_box = array_merge($defaults, $meta_box_config);
 				$this->_nonce_name = $meta_box_config['id'] . '_nonce';
 				$this->_folder_name = 'wp-metabox-constructor-class';
 				$this->_path = plugins_url($this->_folder_name, plugin_basename(dirname( __FILE__ )));
@@ -252,7 +258,7 @@
 			}
 
 			public function addRepeaterBlock($args) {
-				$field = array_merge(array('type' => 'repeater'), $args);
+				$field = array_merge(array('type' => 'repeater', 'single_label' => 'Item'), $args);
 				$this->_fields[] = $field;
 			}
 
@@ -337,10 +343,11 @@
 				echo sprintf(
 					'<a id="%s" class="%s button">
 						<span class="dashicons dashicons-plus"></span>
-						Add Item
+						%s
 					</a>',
 					esc_attr( sprintf('js-%s-add', $field['id']) ),
-					esc_attr( $this->get_block_element_class('add', false)  )
+					esc_attr( $this->get_block_element_class('add', false)  ),
+					esc_html( sprintf('Add %s', $field['single_label']) )
 				);
 
 				$this->after_field();
@@ -356,7 +363,7 @@
 			    $js_code = str_replace("'", "\"", $js_code);
 
 			    /**
-			    * JS to add, remove, and sort the repeatable blocks
+			    * JS to add another repeated block
 			    */
 				echo '<script> 
 						jQuery(document).ready(function($) {
