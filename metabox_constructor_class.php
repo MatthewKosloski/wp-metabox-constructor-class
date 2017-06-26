@@ -57,8 +57,8 @@
 				wp_enqueue_media();
 
 			    if($typenow == $this->_meta_box['post_type']) {
-			        wp_enqueue_style('mcc-styles', $this->_path . '/metabox.css', array(), null);
-			        wp_enqueue_script('mcc-scripts', $this->_path . '/metabox.js', array('jquery'), null);
+			        wp_enqueue_style(sprintf('%s-styles', self::BLOCK_NAMESPACE), $this->_path . '/style.css', array(), null);
+			        wp_enqueue_script(sprintf('%s-scripts', self::BLOCK_NAMESPACE), $this->_path . '/script.js', array('jquery'), null);
 			    }
 			}
 
