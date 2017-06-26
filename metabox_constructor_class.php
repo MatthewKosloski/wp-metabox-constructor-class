@@ -258,7 +258,11 @@
 			}
 
 			public function addRepeaterBlock($args) {
-				$field = array_merge(array('type' => 'repeater', 'single_label' => 'Item'), $args);
+				$field = array_merge(array(
+					'type' => 'repeater', 
+					'single_label' => 'Item',
+					'is_sortable' => true
+				), $args);
 				$this->_fields[] = $field;
 			}
 
@@ -385,6 +389,8 @@
 					esc_attr( $this->get_block_element_class('repeated', false) )	
 				);
 
+				echo sprintf('%s %d', $field['single_label'], $index + 1);
+
 				foreach($field['fields'] as $child_field) {
 					$old_id = $child_field['id'];
 
@@ -410,13 +416,15 @@
 				);
 
 				// "sort" button
-				echo sprintf(
-					'<a class="button %s %s" title="Click and drag to sort">
-						<span class="dashicons dashicons-menu"></span></span>
-					</a>',
-					esc_attr( $this->get_block_element_class('repeater-button', false)  ),
-					esc_attr( sprintf('js-%s-sort', self::BLOCK_NAMESPACE) )
-				);
+				if($field['is_sortable']) {
+					echo sprintf(
+						'<a class="button %s %s" title="Click and drag to sort">
+							<span class="dashicons dashicons-menu"></span></span>
+						</a>',
+						esc_attr( $this->get_block_element_class('repeater-button', false)  ),
+						esc_attr( sprintf('js-%s-sort', self::BLOCK_NAMESPACE) )
+					);
+				}
 				
 				echo '</div>';
 			}
