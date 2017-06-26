@@ -4,6 +4,8 @@ This is a PHP class that allows WordPress plugin developers to easily create cus
 
 Adapted from [My-Meta-Box](https://github.com/bainternet/My-Meta-Box).
 
+![Demo photo](https://i.imgur.com/rm5dpsT.jpg)
+
 ## Installation
 
 - Download this repo as a zip file and extract its contents.
