@@ -57,10 +57,13 @@
 
 				wp_enqueue_media();
 
-			    if(in_array($typenow, $this->_meta_box['screen'])) {
-			        wp_enqueue_style(sprintf('%s-styles', self::BLOCK_NAMESPACE), $this->_path . '/style.css', array(), null);
-			        wp_enqueue_script(sprintf('%s-scripts', self::BLOCK_NAMESPACE), $this->_path . '/script.js', array('jquery'), null);
-			    }
+				if(
+					(is_array($this->_meta_box['screen']) && in_array($typenow, $this->_meta_box['screen'])) ||
+					(is_string($this->_meta_box['screen']) && $typenow == $this->_meta_box['screen'])
+				) {
+					wp_enqueue_style(sprintf('%s-styles', self::BLOCK_NAMESPACE), $this->_path . '/style.css', array());
+			        wp_enqueue_script(sprintf('%s-scripts', self::BLOCK_NAMESPACE), $this->_path . '/script.js', array('jquery'));
+				}
 			}
 
 			public function add() {
