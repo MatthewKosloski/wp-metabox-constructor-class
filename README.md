@@ -4,6 +4,10 @@ This is a PHP class that allows WordPress plugin developers to easily create cus
 
 Adapted from [My-Meta-Box](https://github.com/bainternet/My-Meta-Box).
 
+- [Installation](https://github.com/MatthewKosloski/wp-metabox-constructor-class#installation)
+- [Usage](https://github.com/MatthewKosloski/wp-metabox-constructor-class#usage)
+- [Available Fields](https://github.com/MatthewKosloski/wp-metabox-constructor-class#available-fields)
+
 ![Demo photo](https://i.imgur.com/rm5dpsT.jpg)
 
 ## Installation
