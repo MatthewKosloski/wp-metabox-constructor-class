@@ -16,7 +16,7 @@ Adapted from [My-Meta-Box](https://github.com/bainternet/My-Meta-Box).
 
 To create a metabox, first instantiate an instance of `Metabox_Constructor`.  The class takes one argument, which is an associative array.  The keys to the array are similar to the arguments provided to the [add_meta_box](https://developer.wordpress.org/reference/functions/add_meta_box/) WordPress function; however, you don't provide `callback` or `callback_args`.
 
-``php
+```php
 
 $metabox = new Metabox_Constructor(array(
 	'id' => 'metabox_id', // required
@@ -26,7 +26,7 @@ $metabox = new Metabox_Constructor(array(
 	'priority' => 'default'
 ));
 
-``
+```
 
 ## Available Fields
 
@@ -44,7 +44,7 @@ After instantiating the above metabox, add a few fields to it.  Below is a list 
 
 A simple text input.  Nothing special.
 
-``php
+```php
 
 $metabox->addText(array(
 	'id' => 'metabox_text_field', // required
@@ -52,13 +52,13 @@ $metabox->addText(array(
 	'desc' => 'An example description paragraph that appears below the label.'
 ));
 
-``
+```
 
 ### Textarea
 
 Textareas are used to store a body of text.  For a richer experience with HTML, see the WYSIWYG editor.
 
-``php
+```php
 
 $metabox->addTextArea(array(
 	'id' => 'metabox_textarea_field', // required
@@ -70,7 +70,7 @@ $metabox->addTextArea(array(
 
 Checkboxes are a great way to facilitate conditional logic.
 
-``php
+```php
 
 $metabox->addCheckbox(array(
 	'id' => 'metabox_checkbox_field', // required
@@ -78,13 +78,13 @@ $metabox->addCheckbox(array(
 	'desc' => 'An example description paragraph that appears below the label.'
 ));
 
-``
+```
 
 ### Radio
 
 Radio fields are a great way to choose from a selection of options.
 
-``php
+```php
 
 $metabox->addRadio(
 	array(
@@ -98,13 +98,13 @@ $metabox->addRadio(
 	)
 );
 
-``
+```
 
 ### Image Upload
 
 Use this to permit users to upload an image within the metabox.  Pro tip: use this with the repeater to dynamically manage the photos within a gallery or slideshow.
 
-``php
+```php
 
 $metabox->addImage(array(
 	'id' => 'metabox_image_field', // required
@@ -112,13 +112,13 @@ $metabox->addImage(array(
 	'desc' => 'An example description paragraph that appears below the label.'
 ));
 
-``
+```
 
 ### WYSIWYG Editor
 
 You can use a WYSIWYG editor to facilitate the management of HTML content.
 
-``php
+```php
 
 $metabox->addWysiwyg(array(
 	'id' => 'metabox_wysiwyg_field', // required
@@ -126,7 +126,7 @@ $metabox->addWysiwyg(array(
 	'desc' => 'An example description paragraph that appears below the label.'
 ));
 
-``
+```
 
 ### Repeater
 
@@ -134,7 +134,7 @@ All of the above fields can be added to a repeater to store an array of content 
 
 Notice:  `true` is a second argument to the repeater fields.  This is required.  Also, the variable, `$metabox_repeater_block_fields[]`, which stores the repeater block's fields, has a pair of brackets `[]` at the end of the variable name.  This is required. 
 
-``php
+```php
 
 $metabox_repeater_block_fields[] = $metabox->addText(array(
 	'id' => 'metabox_repeater_text_field',
@@ -159,4 +159,4 @@ $metabox->addRepeaterBlock(array(
 	'single_label' => 'Photo'
 ));
 
-``
+```
