@@ -445,7 +445,7 @@
 			    */
 				echo '<script> 
 						jQuery(document).ready(function($) {
-							var count = '.$count.';
+							var count = '.max(1, $count).';
 
 							$("#js-'. $field['id'] .'-add").on("click", function() {
 								var repeater = \''.$js_code.'\'
