@@ -52,7 +52,7 @@ $metabox->addText(array(
 
 ### Textarea
 
-Textareas are used to store a body of text.  For a richer experience with HTML, see the WYSIWYG editor.
+Textareas are used to store a body of text.  For a richer experience with HTML, see the [WYSIWYG](https://github.com/MatthewKosloski/wp-metabox-constructor-class#wysiwyg-editor) editor.
 
 ```php
 $metabox->addTextArea(array(
@@ -94,7 +94,7 @@ $metabox->addRadio(
 
 ### Image Upload
 
-Use this to permit users to upload an image within the metabox.  Pro tip: use this with the repeater to dynamically manage the photos within a gallery or slideshow.
+Use this to permit users to upload an image within the metabox.  Pro tip: use this with the [repeater](https://github.com/MatthewKosloski/wp-metabox-constructor-class#repeater) to dynamically manage the photos within a gallery or slideshow.
 
 ```php
 $metabox->addImage(array(
