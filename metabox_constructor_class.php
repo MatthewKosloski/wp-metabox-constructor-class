@@ -32,7 +32,7 @@
 			/**
 			* Class constructor.
 			* @param array Should be an associative array with the following keys:
-			* 'title', 'post_type', 'context', 'priority'
+			* 'title', 'screen', 'context', 'priority'
 			* @return void
 			*/
 			public function __construct($meta_box_config) {
@@ -57,7 +57,7 @@
 
 				wp_enqueue_media();
 
-			    if($typenow == $this->_meta_box['post_type']) {
+			    if(in_array($typenow, $this->_meta_box['screen'])) {
 			        wp_enqueue_style(sprintf('%s-styles', self::BLOCK_NAMESPACE), $this->_path . '/style.css', array(), null);
 			        wp_enqueue_script(sprintf('%s-scripts', self::BLOCK_NAMESPACE), $this->_path . '/script.js', array('jquery'), null);
 			    }
