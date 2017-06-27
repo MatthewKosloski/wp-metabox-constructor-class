@@ -68,7 +68,7 @@
 					$this->_meta_box['id'],
 					$this->_meta_box['title'],
 					array($this, 'show'), // callback
-					$this->_meta_box['post_type'], // screen
+					$this->_meta_box['screen'],
 					$this->_meta_box['context'],
 					$this->_meta_box['priority']
 				);

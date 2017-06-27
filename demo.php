@@ -5,7 +5,7 @@ require_once("metabox_constructor_class.php");
 $metabox = new Metabox_Constructor(array(
 	'id' => 'metabox_id',
 	'title' => __('Metabox Demo', 'experiment_functionality'),
-	'post_type' => 'post'
+	'screen' => 'post'
 ));
 
 $metabox_repeater_block15_fields[] = $metabox->addText(array(
