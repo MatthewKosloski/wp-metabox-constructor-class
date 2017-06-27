@@ -20,9 +20,9 @@ $metabox_repeater_block15_fields[] = $metabox->addTextArea(array(
 
 $metabox->addRepeaterBlock(array(
 	'id' => 'metabox_repeater_block15',
+	'label' => 'Repeater Block Field',
 	'desc' => 'Repeater blocks can be used to store an array of content with a dynamic length (e.g, Products).',
 	'fields' => $metabox_repeater_block15_fields,
-	'label' => 'Repeater Block Field',
 	'single_label' => 'Product'
 ));
 
@@ -34,14 +34,27 @@ $metabox_repeater_block15_fields[] = $metabox->addWysiwyg(array(
 
 $metabox->addCheckbox(array(
 	'id' => 'metabox_checkbox_field',
-	'desc' => 'Checkboxes are a great way to facilitate conditional logic.',
-	'label' => 'Checkbox Field'
+	'label' => 'Checkbox Field',
+	'desc' => 'Checkboxes are a great way to facilitate conditional logic.'
 ));
+
+$metabox->addRadio(
+	array(
+		'id' => 'metabox_radio_field',
+		'label' => 'Radio Field',
+		'desc' => 'Radio fields are a great way to choose from a selection of options.',
+	),
+	array(
+		'key1' => 'Value One',
+		'key2' => 'Value Two'
+	)
+);
+
 
 $metabox->addImage(array(
 	'id' => 'metabox_image_field2',
-	'desc' => 'Upload an image, or change it, by clicking the button below the preview.',
-	'label' => 'Image Upload Field'
+	'label' => 'Image Upload Field',
+	'desc' => 'Upload an image, or change it, by clicking the button below the preview.'
 ));
 
 $metabox->addText(array(

@@ -299,6 +299,16 @@
 				}
 			}
 
+			public function addRadio($args, $options, $repeater = false) {
+				$options = array('options' => $options);
+				$field = array_merge(array('type' => 'radio'), $args, $options);
+				if(!$repeater) {
+					$this->_fields[] = $field;
+				} else {
+					return $field;
+				}
+			}
+
 			public function addRepeaterBlock($args) {
 				$field = array_merge(array(
 					'type' => 'repeater', 
@@ -362,6 +372,25 @@
 				$this->before_field($field);
 				wp_editor($meta, $field['id']);
 				$this->after_field();
+			}
+
+			public function show_field_radio($field, $meta) {
+				$this->before_field($field);
+				foreach($field['options'] as $key => $value) {
+					echo sprintf(
+					'
+						<label for="%1$s">%2$s</label>
+						<input type="radio" class="%3$s" id="%1$s" name="%4$s" value="%5$s" %6$s>
+					',
+						esc_attr( $field['id'] . '_' . $key ),
+						esc_html( $value ),
+						esc_attr( $this->get_block_element_class_with_namespace($field['type']) ),
+						esc_attr( $field['id'] ),
+						esc_attr( $key ),
+						checked( $key == $meta, true, false )
+					);
+				}
+				$this->after_field($field); // pass in $field to render desc below input
 			}
 
 			public function show_field_repeater($field, $meta) {
