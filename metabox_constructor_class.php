@@ -101,7 +101,7 @@
 			* @return void
 			*/
 			public function save() {
-				global $post_id;
+				global $post_id, $post;
 
 				if(
 			        (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) || // prevent the data from being auto-saved
