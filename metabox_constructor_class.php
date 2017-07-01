@@ -101,11 +101,11 @@
 			* @return void
 			*/
 			public function save() {
-				global $post;
+				global $post_id;
 
 				if(
 			        (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) || // prevent the data from being auto-saved
-			        (!current_user_can('edit_post', $post->ID)) || // check user permissions
+			        (!current_user_can('edit_post', $post_id)) || // check user permissions
 			        ((!isset($_POST[$this->_nonce_name]))) || // verify nonce (same with below)
 			        (!wp_verify_nonce($_POST[$this->_nonce_name], basename(__FILE__)))
 			    ) 
