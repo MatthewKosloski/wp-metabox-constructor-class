@@ -8,19 +8,15 @@
 		$('.mcc-box__field-container').on('click', '.js-mcc-box-image-upload-button', function(e){
 			e.preventDefault();
 
+			image_frame = wp.media.frames.image_frame = wp.media({library: {type: 'image'}});
+			image_frame.open();
+
 			var id = $(this).data('hidden-input').replace(/(\[|\])/g, '\\$1');
-
-			if(image_frame !== undefined) {
-				image_frame.open();
-				return;
-			}
-
-			image_frame = wp.media.frames.image_frame = wp.media({
-				library: {type: 'image'}
-			});
+			console.log(id);
 
 			image_frame.on('select', function() {
 				var attachment = image_frame.state().get('selection').first().toJSON();
+				console.log(id);
 				$('#image-'+id).val(attachment.url);
 
 				$('#js-'+id+'-image-preview').removeClass('is-hidden').attr('src', attachment.url);
